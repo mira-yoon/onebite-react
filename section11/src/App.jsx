@@ -1,5 +1,11 @@
 import "./App.css";
-import { useState, useRef, useReducer, useCallback } from "react";
+import {
+  useState,
+  useRef,
+  useReducer,
+  useCallback,
+  createContext,
+} from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
@@ -40,6 +46,8 @@ function reducer(state, action) {
       return state;
   }
 }
+
+export const TodoContext = createContext();
 
 /* useState가 아닌 useReducer 훅을 사용한 상태관리 코드 */
 function App() {
@@ -95,9 +103,10 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Editor onCreate={onCreate} />
-      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
-      {/* <Exam /> */}
+      <TodoContext.Provider value={{ todos, onCreate, onUpdate, onDelete }}>
+        <Editor />
+        <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+      </TodoContext.Provider>
     </div>
   );
 }

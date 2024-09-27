@@ -1,8 +1,12 @@
 import "./List.css";
 import TodoItem from "./TodoItem";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
+import { TodoContext } from "../App";
 
-const List = ({ todos, onUpdate, onDelete }) => {
+const List = () => {
+  // 구조분해할당으로 todos만 변수에 저장.
+  const { todos } = useContext(TodoContext);
+
   const [search, setSearch] = useState("");
 
   const onChangeSearch = (e) => {
@@ -78,14 +82,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
       />
       <div className="todos_wrapper">
         {filteredTodos.map((todo) => {
-          return (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          );
+          return <TodoItem key={todo.id} {...todo} />;
         })}
       </div>
     </div>

@@ -1,7 +1,14 @@
 import "./Editor.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import { TodoContext } from "../App";
 
-const Editor = ({ onCreate }) => {
+const Editor = () => {
+  // useContext는 인수로 전달한 context로부터 공급된 데이터를 반환해주는 함수.
+  // const data = useContext(TodoContext);
+  // console.log(data); // context에 전달했던 데이터들이 다 들어있다.
+  // 구조분해할당으로 onCreate만 변수에 저장.
+  const { onCreate } = useContext(TodoContext);
+
   const [content, setContent] = useState("");
   const contentRef = useRef(null);
 
