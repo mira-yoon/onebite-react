@@ -5,6 +5,7 @@ import {
   useReducer,
   useCallback,
   createContext,
+  useMemo,
 } from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
@@ -47,7 +48,11 @@ function reducer(state, action) {
   }
 }
 
-export const TodoContext = createContext();
+// Context 분리하기
+//TodoStateContext : 변경될 수 있는 값 - todos
+//TodoDispatchContext : 변경되지 않는 값 - onCreate, onUpdate, onDelete
+export const TodoStateContext = createContext();
+export const TodoDispatchContext = createContext();
 
 /* useState가 아닌 useReducer 훅을 사용한 상태관리 코드 */
 function App() {
@@ -100,13 +105,22 @@ function App() {
   // deps가 빈 배열일 경우에는 컴포넌트가 최초로 렌더링되었을 때만 함수를 생성한다.
   // const func = useCallback(() => {}, []);
 
+  // 최초 렌더링 이후 다시 생성되지 않도록 useMemo로 리턴
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, []);
+
   return (
+    // Context 분리하기
+    // todos는 value로 객체가 아니라 값을 그대로 전달함
     <div className="App">
       <Header />
-      <TodoContext.Provider value={{ todos, onCreate, onUpdate, onDelete }}>
-        <Editor />
-        <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
-      </TodoContext.Provider>
+      <TodoStateContext.Provider value={todos}>
+        <TodoDispatchContext.Provider value={memoizedDispatch}>
+          <Editor />
+          <List />
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   );
 }

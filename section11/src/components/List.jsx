@@ -1,11 +1,11 @@
 import "./List.css";
 import TodoItem from "./TodoItem";
 import { useState, useMemo, useContext } from "react";
-import { TodoContext } from "../App";
+import { TodoStateContext } from "../App";
 
 const List = () => {
-  // 구조분해할당으로 todos만 변수에 저장.
-  const { todos } = useContext(TodoContext);
+  // useContext로 받아온 값은 객체가 아님. 따라서 구조분해할당이 아니라 바로 받아오게 수정함.
+  const todos = useContext(TodoStateContext);
 
   const [search, setSearch] = useState("");
 
