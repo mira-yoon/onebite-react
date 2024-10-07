@@ -113,6 +113,7 @@ function App() {
   return (
     // Context 분리하기
     // todos는 value로 객체가 아니라 값을 그대로 전달함
+    // 분리한 Provider컴포넌트를 두 번 감쌈
     <div className="App">
       <Header />
       <TodoStateContext.Provider value={todos}>
