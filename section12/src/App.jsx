@@ -10,19 +10,19 @@ import Notfound from "./pages/Notfound";
 const mocData = [
   {
     id: 1,
-    createDate: new Date("2024-10-11").getTime(),
+    createdDate: new Date("2024-10-11").getTime(),
     emotionId: 1,
     content: "1번 일기 내용",
   },
   {
     id: 2,
-    createDate: new Date("2024-10-10").getTime(),
+    createdDate: new Date("2024-10-10").getTime(),
     emotionId: 2,
     content: "2번 일기 내용",
   },
   {
     id: 3,
-    createDate: new Date("2024-09-01").getTime(),
+    createdDate: new Date("2024-09-01").getTime(),
     emotionId: 3,
     content: "3번 일기 내용",
   },
@@ -51,12 +51,12 @@ function App() {
   const idRef = useRef(3);
 
   // 새로운 일기 추가
-  const onCreate = (createDate, emotionId, content) => {
+  const onCreate = (createdDate, emotionId, content) => {
     dispatch({
       type: "CREATE",
       data: {
         id: idRef.current++,
-        createDate,
+        createdDate,
         emotionId,
         content,
       },
@@ -64,12 +64,12 @@ function App() {
   };
 
   // 기존 일기 수정
-  const onUpdate = (id, createDate, emotionId, content) => {
+  const onUpdate = (id, createdDate, emotionId, content) => {
     dispatch({
       type: "UPDATE",
       data: {
         id,
-        createDate,
+        createdDate,
         emotionId,
         content,
       },

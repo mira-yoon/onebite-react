@@ -27,6 +27,7 @@ const getMonthlyData = (pivotDate, data) => {
     59
   ).getTime();
 
+  // 일기 item중에서 createdDate의 값이 이번 달에 해당하는 것만 필터링.
   // createdDate가 beginTime보다는 나중이고, endTime보다는 이전이면 이번달에 작성된 일기가 맞으니 필터링해서 새 배열 반환
   return data.filter(
     (item) => beginTime <= item.createdDate && item.createdDate <= endTime
@@ -35,11 +36,11 @@ const getMonthlyData = (pivotDate, data) => {
 
 const Home = () => {
   const data = useContext(DiaryStateContext);
-  console.log(data);
+
   const [pivotDate, setPivotDate] = useState(new Date());
 
+  // 이번 달의 아이템
   const monthlyData = getMonthlyData(pivotDate, data);
-  console.log(monthlyData);
 
   const onIncreaseMonth = () => {
     setPivotDate(new Date(pivotDate.getFullYear(), pivotDate.getMonth() + 1));
@@ -55,7 +56,7 @@ const Home = () => {
         leftChild={<Button onClick={onDecreaseMonth} text={"<"} />}
         rightChild={<Button onClick={onIncreaseMonth} text={">"} />}
       />
-      <DiaryList />
+      <DiaryList data={monthlyData} />
     </div>
   );
 };
