@@ -1,7 +1,7 @@
 import "./Editor.css";
 import EmotionItem from "./EmotionItem";
 import Button from "./Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const emotionList = [
@@ -44,7 +44,7 @@ const getStringedDate = (targetDate) => {
   return `${year}-${month}-${date}`;
 };
 
-const Editor = ({ onSubmit }) => {
+const Editor = ({ initData, onSubmit }) => {
   const nav = useNavigate();
 
   const [input, setInput] = useState({
@@ -52,6 +52,17 @@ const Editor = ({ onSubmit }) => {
     emotionId: 3,
     content: "",
   });
+
+  // initData
+  // App에서 받아온 data이기 때문에 createdDate 타임스탬프 형식이다. 여기서는 date 객체로 변환해야 함.
+  useEffect(() => {
+    if (initData) {
+      setInput({
+        ...initData,
+        createdDate: new Date(Number(initData.createdDate)),
+      });
+    }
+  }, [initData]);
 
   // <input />에 value로 넣을 때는 YYYY-MM-DD로 넣어야 하고
   // <input />이 변경되었을 때 상태변화 함수로 state를 변경할 때는 다시 Date객체로 변환해서 넣어야 함.
