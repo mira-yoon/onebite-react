@@ -5,7 +5,7 @@ import { DiaryStateContext } from "../App";
 const useDiary = (id) => {
   const nav = useNavigate();
   const data = useContext(DiaryStateContext);
-  const [curDiaryItem, setCurDiaryItem] = useState();
+  const [curDiaryItem, setCurDiaryItem] = useState(); // 초기값이 비어있으니 undefined이다.
 
   // navigate함수는 컴포넌트들이 마운트된 다음에만 동작할 수 있다.
   // 컴포넌트가 렌더링되자마자 함수를 호출하려면 useEffect를 사용한다.
