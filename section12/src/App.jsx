@@ -1,5 +1,5 @@
 import "./App.css";
-import { useReducer, useRef, createContext, useEffect } from "react";
+import { useReducer, useRef, createContext, useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Diary from "./pages/Diary";
@@ -79,6 +79,10 @@ export const DiaryStateContext = createContext();
 export const DiaryDispatchContext = createContext();
 
 function App() {
+  // 로딩중이면 true 로딩완료면 false
+  // 일단 컴포넌트는 처음에 로딩상태로 출발하므로 초기값은 true
+  const [isLoading, setIsLoading] = useState(true);
+
   const [data, dispatch] = useReducer(reducer, []);
   const idRef = useRef(0);
 
@@ -87,12 +91,18 @@ function App() {
     const storedData = localStorage.getItem("diary");
 
     // 예외처리: storedData가 undefined나 null이라면 종료하기
-    if (!storedData) return;
+    if (!storedData) {
+      setIsLoading(false); // return을 만나서 데이터로딩이 끝까지 완료되지 않았을 때도 false 넣어준다
+      return;
+    }
 
     const parsedData = JSON.parse(storedData);
 
     // 예외처리: parsedData가 배열이 아닐 경우에 forEach()를 쓰면 오류가 나므로 종료하기
-    if (!Array.isArray(parsedData)) return;
+    if (!Array.isArray(parsedData)) {
+      setIsLoading(false); // return을 만나서 데이터로딩이 끝까지 완료되지 않았을 때도 false 넣어준다
+      return;
+    }
 
     // 로컬스토리지에 저장된 id값중 가장 높은 값 구하기
     let maxId = 0;
@@ -109,6 +119,9 @@ function App() {
       type: "INIT",
       data: parsedData,
     });
+
+    // 로딩이 완료되는 시점? dispatch함수가 실행되어서 data state에 초기값을 설정하는 순간 로딩이 완료된다.
+    setIsLoading(false);
   }, []);
 
   // 새로운 일기 추가
@@ -144,6 +157,11 @@ function App() {
       id,
     });
   };
+
+  // 로딩이 끝나지 않았을 때에는 페이지들을 렌더링하면 안된다.
+  if (isLoading) {
+    return <div>데이터 로딩중입니다 ...</div>;
+  }
 
   return (
     <>
